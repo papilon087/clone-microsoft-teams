@@ -1,5 +1,17 @@
+import { Chat } from "./components/Chat";
+import { Header } from "./components/Header";
+import { Sidebar } from "./components/Sidebar";
+
 function App() {
-  return <div className="flex flex-col h-screen">teste</div>;
+  return (
+    <div className="flex flex-col h-screen">
+      <Header />
+      <main className="flex flex-1 overflow-hidden">
+        <Sidebar />
+        <Chat />
+      </main>
+    </div>
+  );
 }
 
 export default App;
