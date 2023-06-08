@@ -10,14 +10,13 @@ interface MessagesList {
   avatarURL: string;
   userId: string;
 }
-
 export function Chat() {
   const [message, setMessage] = useState("");
   const [messagesList, setMessagesList] = useState([]);
 
   async function handleSubmitMessage(e: FormEvent) {
     e.preventDefault();
-    setMessagesList([...messagesList, message]);
+    //setMessagesList();
     setMessage("");
   }
 
