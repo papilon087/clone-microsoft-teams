@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Chat } from "../components/Chat";
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
-import { User, getAuth, onAuthStateChanged } from "firebase/auth";
+import { User, getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from "../services/firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -22,13 +22,24 @@ export function Home() {
     });
   });
 
+  function handleSignOut() {
+    signOut(auth)
+      .then(() => {
+        navigate("/");
+        setUser(null);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   if (!user) {
     return <p>Carregando...</p>;
   }
 
   return (
     <div className="flex flex-col h-screen">
-      <Header />
+      <Header user={user} handleSignOut={handleSignOut} />
       <main className="flex flex-1 overflow-hidden">
         <Sidebar />
         <Chat user={user} />

@@ -1,11 +1,19 @@
-import { FormEvent, useState } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { FormEvent, useEffect, useState } from "react";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../services/firebase";
 
 import { PaperPlaneRight, PencilSimple, Plus, UserPlus } from "phosphor-react";
 
 import comunidev_profile from "../assets/comunidev_profile.png";
 import { User } from "firebase/auth";
+import { Avatar } from "./Avatar";
 
 interface MessagesList {
   idMessage: string;
@@ -22,7 +30,7 @@ interface ChatProps {
 
 export function Chat({ user }: ChatProps) {
   const [message, setMessage] = useState("");
-  const [messagesList, setMessagesList] = useState([]);
+  const [messagesList, setMessagesList] = useState<MessagesList[]>();
 
   async function handleSubmitMessage(e: FormEvent) {
     e.preventDefault();
@@ -43,6 +51,24 @@ export function Chat({ user }: ChatProps) {
       console.log(error);
     }
   }
+
+  async function getMessages() {
+    const q = query(collection(db, "messages"), orderBy("created_at"));
+    const subscribe = onSnapshot(q, (QuerySnapshot) => {
+      const data = QuerySnapshot.docs.map((doc) => {
+        return {
+          idMessage: doc.id,
+          ...doc.data(),
+        };
+      }) as MessagesList[];
+
+      setMessagesList(data);
+    });
+  }
+
+  useEffect(() => {
+    getMessages();
+  });
 
   return (
     <div className="flex-1 shadow-[-8px_10px_10px_-5px_rgba(0,0,0,0.1)] overflow-hidden">
@@ -77,7 +103,27 @@ export function Chat({ user }: ChatProps) {
           <ul className="flex flex-col gap-3 w-full">
             {messagesList ? (
               messagesList.map((message) => {
-                return <li key={message}></li>;
+                return message.userId !== user?.uid ? (
+                  <li
+                    key={message.idMessage}
+                    className="flex gap-3 items-center"
+                  >
+                    <Avatar avatarURL={message.avatarURL} />
+                    <div className="bg-white p-2 rounded">
+                      <p className="font-semibold">{message.username}</p>
+                      <p className="max-w-4xl">{message.message}</p>
+                    </div>
+                  </li>
+                ) : (
+                  <li
+                    key={message.idMessage}
+                    className="flex gap-3 items-center justify-end"
+                  >
+                    <div className="bg-indigo-100 p-2 rounded">
+                      <p className="text-right max-w-4xl">{message.message}</p>
+                    </div>
+                  </li>
+                );
               })
             ) : (
               <p className="text-2xl font-bold px-[50px] py-5 text-center">
