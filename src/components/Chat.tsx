@@ -1,6 +1,11 @@
-import { PaperPlaneRight, PencilSimple, Plus, UserPlus } from "phosphor-react";
-import comunidev_profile from "../assets/comunidev_profile.png";
 import { FormEvent, useState } from "react";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../services/firebase";
+
+import { PaperPlaneRight, PencilSimple, Plus, UserPlus } from "phosphor-react";
+
+import comunidev_profile from "../assets/comunidev_profile.png";
+import { User } from "firebase/auth";
 
 interface MessagesList {
   idMessage: string;
@@ -10,14 +15,33 @@ interface MessagesList {
   avatarURL: string;
   userId: string;
 }
-export function Chat() {
+
+interface ChatProps {
+  user: User | null;
+}
+
+export function Chat({ user }: ChatProps) {
   const [message, setMessage] = useState("");
   const [messagesList, setMessagesList] = useState([]);
 
   async function handleSubmitMessage(e: FormEvent) {
     e.preventDefault();
-    //setMessagesList();
+    await sendMessage();
     setMessage("");
+  }
+
+  async function sendMessage() {
+    try {
+      await addDoc(collection(db, "messages"), {
+        username: user?.displayName,
+        avatarURL: user?.photoURL,
+        userId: user?.uid,
+        message: message,
+        created_at: serverTimestamp(),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
