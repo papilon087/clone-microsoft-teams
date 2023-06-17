@@ -22,7 +22,7 @@ Bem-vindo ao repositório do Clone do Microsoft Teams! Este é um projeto incrí
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
-- [Next](https://nextjs.org/)
+- [React](https://react.dev/)
 - [Typescript](https://www.typescriptlang.org/)
 - [Tailwindcss](Tailwindcss)
 - [Firebase](https://firebase.google.com/?hl=pt)
