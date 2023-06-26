@@ -36,6 +36,8 @@ O Clone do Microsoft Teams possui uma variedade de funcionalidades, incluindo:
 - Criação de login com o google.
 - Envio de mensagens de texto e compartilhamento de arquivos.
 - Notificações em tempo real para mensagens e chamadas recebidas.
+- Troca de mensagem por chat em tempo real.
+- Integração com firebase.
 
 ## Contribuição
 
