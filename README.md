@@ -29,9 +29,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [Vite](https://vitejs.dev/)
 - [Node e NPM](https://nodejs.org/)
 
-- ## 🚀 Projeto
-
-## Funcionalidades Principais
+## 🚀 Projeto Funcionalidades Principais
 
 O Clone do Microsoft Teams possui uma variedade de funcionalidades, incluindo:
 
